@@ -14,20 +14,48 @@
       background: #fff;
       color: #111;
     }
-    .wrap {
-      text-align: center;
+
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 14px;
       padding: 24px;
+      min-width: 280px;
+      max-width: 420px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
     }
-    .number {
-      font-size: 3rem;
+
+    .row + .row {
+      margin-top: 18px;
+    }
+
+    .label {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 6px;
+    }
+
+    .value {
+      font-size: 2rem;
       font-weight: 700;
-      line-height: 1.1;
+      line-height: 1.15;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div id="result" class="number"></div>
+  <div id="card" class="card hidden">
+    <div class="row">
+      <div class="label">Current year</div>
+      <div id="currentYear" class="value"></div>
+    </div>
+
+    <div class="row">
+      <div class="label">Years passed since selected year</div>
+      <div id="yearsPassed" class="value"></div>
+    </div>
   </div>
 
   <script>
@@ -35,14 +63,19 @@
       const raw = window.location.hash.slice(1).trim();
       const year = Number.parseInt(raw, 10);
       const now = new Date().getFullYear();
-      const result = document.getElementById("result");
 
-      if (!Number.isInteger(year) || year < 0 || year > now) {
-        result.textContent = "";
+      const card = document.getElementById("card");
+      const currentYear = document.getElementById("currentYear");
+      const yearsPassed = document.getElementById("yearsPassed");
+
+      if (!raw || !Number.isInteger(year) || year < 0 || year > now) {
+        card.classList.add("hidden");
         return;
       }
 
-      result.textContent = now - year;
+      currentYear.textContent = now;
+      yearsPassed.textContent = now - year;
+      card.classList.remove("hidden");
     }
 
     window.addEventListener("hashchange", render);
