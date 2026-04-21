@@ -3,62 +3,50 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Year Calculator</title>
+  <title>c</title>
   <style>
     body {
       font-family: system-ui, sans-serif;
-      max-width: 700px;
-      margin: 40px auto;
-      padding: 0 16px;
-      line-height: 1.5;
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #fff;
+      color: #111;
     }
-    .card {
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 20px;
+    .wrap {
+      text-align: center;
+      padding: 24px;
     }
-    .big {
-      font-size: 2rem;
+    .number {
+      font-size: 3rem;
       font-weight: 700;
-      margin: 12px 0;
-    }
-    .muted {
-      color: #666;
-    }
-    code {
-      background: #f5f5f5;
-      padding: 2px 6px;
-      border-radius: 6px;
+      line-height: 1.1;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Year Calculator</h1>
-    <p class="muted">Use a link like <code>#1987</code> at the end of the URL.</p>
-    <div id="output"></div>
+  <div class="wrap">
+    <div id="result" class="number"></div>
   </div>
 
   <script>
-    const hash = window.location.hash.replace("#", "").trim();
-    const year = parseInt(hash, 10);
-    const now = new Date().getFullYear();
-    const output = document.getElementById("output");
+    function render() {
+      const raw = window.location.hash.slice(1).trim();
+      const year = Number.parseInt(raw, 10);
+      const now = new Date().getFullYear();
+      const result = document.getElementById("result");
 
-    if (!Number.isInteger(year) || year < 0 || year > now) {
-      output.innerHTML = `
-        <p>Example:</p>
-        <p><code>${window.location.origin}${window.location.pathname}#1987</code></p>
-      `;
-    } else {
-      const passed = now - year;
-      output.innerHTML = `
-        <p>Original year:</p>
-        <div class="big">${year}</div>
-        <p>Years passed:</p>
-        <div class="big">${passed}</div>
-      `;
+      if (!Number.isInteger(year) || year < 0 || year > now) {
+        result.textContent = "";
+        return;
+      }
+
+      result.textContent = now - year;
     }
+
+    window.addEventListener("hashchange", render);
+    window.addEventListener("load", render);
   </script>
 </body>
 </html>
